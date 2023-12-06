@@ -1,9 +1,19 @@
-from sqlalchemy import Boolean, Column, Integer, String
-from database import Base
+from sqlalchemy import Column, Integer, Text, ForeignKey, TIMESTAMP
+from sqlalchemy.orm import relationship
+
+from core.database import Base
 
 
-class User(Base):
-    __tablename__ = 'users'
+class Response(Base):
+    __tablename__ = 'response'
 
-    id = Column(Integer, primary_key=True, index=True)
-    name = Column(String, unique=True, index=True)
+    id = Column(Integer, primary_key=True)
+    endpoint_id = Column(Integer, ForeignKey('endpoint.id', ondelete='CASCADE'))
+    response_schema_id = Column(Integer, ForeignKey('schema.id'))
+    status_code = Column(Integer)
+    description = Column(Text)
+    created_at = Column(TIMESTAMP, server_default='CURRENT_TIMESTAMP')
+    updated_at = Column(TIMESTAMP, server_default='CURRENT_TIMESTAMP', onupdate='CURRENT_TIMESTAMP')
+
+    endpoint = relationship('Endpoint', back_populates='responses')
+    response_schema = relationship('Schema')
