@@ -12,6 +12,7 @@ from fastapi.openapi.utils import get_openapi
 import core.settings.config as conf
 from core.database import init_models
 
+import app
 
 conf.DEBUG = True
 security = HTTPBasic()

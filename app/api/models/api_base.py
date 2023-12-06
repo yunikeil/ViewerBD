@@ -1,4 +1,4 @@
-from sqlalchemy import Column, Integer, String, Text, TIMESTAMP
+from sqlalchemy import Column, Integer, String, Text, TIMESTAMP, text
 
 from core.database import Base
 
@@ -11,5 +11,5 @@ class Api(Base):
     version = Column(String(8))
     description = Column(Text)
     base_url = Column(String(25))
-    created_at = Column(TIMESTAMP, server_default='CURRENT_TIMESTAMP')
-    updated_at = Column(TIMESTAMP, server_default='CURRENT_TIMESTAMP', onupdate='CURRENT_TIMESTAMP')
+    created_at = Column(TIMESTAMP, server_default=text('CURRENT_TIMESTAMP'))
+    updated_at = Column(TIMESTAMP, server_default=text('CURRENT_TIMESTAMP'), onupdate=text('CURRENT_TIMESTAMP'))

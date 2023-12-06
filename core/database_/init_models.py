@@ -4,7 +4,7 @@ from core.database import Base
 import core.settings.config as conf
 
 
-engine = create_async_engine(conf.DATABASE_URL, echo=False)
+engine = create_async_engine(conf.DATABASE_URL, echo=True)
 
 
 async def init_models(*, drop_all=False):
