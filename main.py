@@ -69,5 +69,5 @@ async def openapi(username: str = Depends(__temp_get_current_username)):
 
 
 if __name__ == "__main__":
-    asyncio.run(init_models(drop_all=True))
+    asyncio.run(init_models(drop_all=False))
     uvicorn.run("main:app", host=conf.SERVER_IP, port=conf.SERVER_PORT, reload=True)
