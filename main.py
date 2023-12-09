@@ -39,7 +39,6 @@ app.include_router(parameter.api_router)
 app.include_router(response.api_router)
 
 
-
 def __temp_get_current_username(
     credentials: Annotated[HTTPBasicCredentials, Depends(security)]
 ):
@@ -82,3 +81,4 @@ async def openapi(username: str = Depends(__temp_get_current_username)):
 if __name__ == "__main__":
     asyncio.run(init_models(drop_all=True))
     uvicorn.run("main:app", host=conf.SERVER_IP, port=conf.SERVER_PORT, reload=True)
+    
