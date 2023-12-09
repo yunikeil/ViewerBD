@@ -12,15 +12,19 @@ class Methods(str, Enum):
 
 class EndpointCreate(BaseModel):
     api_id: int
-    request_schema_id: int
+    request_schema_id: int | None = None
     path: str = "/"
     method: Methods = Methods.get
     summary: str = "Summary"
     description: str = "Description"
 
 
-class EndpointUpdate(EndpointCreate):
-    pass
+class EndpointUpdate(BaseModel):
+    request_schema_id: int | None = None
+    path: str = "/"
+    method: Methods = Methods.get
+    summary: str = "Summary"
+    description: str = "Description"
 
 
 class EndpointInDB(EndpointCreate):

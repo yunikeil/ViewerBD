@@ -3,13 +3,23 @@ from sqlalchemy.ext.asyncio import AsyncSession
 
 from core.database import get_session
 from .. import schemas, services
+from app.schema.services import get_schema
 
 
 router = APIRouter()
 
 
 @router.post("/")
-async def create(api_data: schemas.EndpointCreate = Depends(schemas.EndpointCreate), db_session: AsyncSession = Depends(get_session)) -> schemas.EndpointInDB:   
+async def create(api_data: schemas.EndpointCreate = Depends(schemas.EndpointCreate), db_session: AsyncSession = Depends(get_session)) -> schemas.EndpointInDB:  
+    if api_data.request_schema_id:
+        schema = await get_schema(db_session, id=api_data.request_schema_id)
+        
+        if not schema:
+            raise HTTPException(
+                status_code=status.HTTP_404_NOT_FOUND,
+                detail="Schema not found!"
+            )    
+
     contact = await services.create_endpoint(db_session, data_in=api_data)
     if not contact:
         raise HTTPException(

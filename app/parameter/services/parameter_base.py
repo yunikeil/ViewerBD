@@ -9,7 +9,7 @@ from app.endpoint.services import get_endpoint
 
 
 async def create_parameter(db_session: AsyncSession, *, data_in: schemas.ParameterCreate,) -> models.Parameter:
-    endpoint = await get_endpoint(db_session, id=data_in.endpoind_id)
+    endpoint = await get_endpoint(db_session, id=data_in.endpoint_id)
     
     if not endpoint:
         return None

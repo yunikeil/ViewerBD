@@ -4,29 +4,33 @@ from pydantic import BaseModel
 
 
 class ParameterLocation(str, Enum):
-    cookie = "cookie"
-    header = "header"
-    payload = "payload"
+    cookie = "COOKIE"
+    header = "HEADER"
+    payload = "PAYLOAD"
 
 
 class ParameterType(str, Enum):
-    str = "str"
-    int = "int"
-    bool = "bool"
-    float = "float"
+    str = "STR"
+    int = "INT"
+    bool = "BOOL"
+    float = "FLOAT"
 
 
 class ParameterCreate(BaseModel):
-    endpoind_id: int
+    endpoint_id: int
     name: str = "Name"
     location: ParameterLocation = ParameterLocation.payload
     type: ParameterType = ParameterType.str
-    requred: bool = False
+    required: bool = False
     description: str = "Description"
 
 
-class ParameterUpdate(ParameterCreate):
-    pass
+class ParameterUpdate(BaseModel):
+    name: str = "Name"
+    location: ParameterLocation = ParameterLocation.payload
+    type: ParameterType = ParameterType.str
+    required: bool = False
+    description: str = "Description"
 
 
 class ParameterInDB(ParameterCreate):
