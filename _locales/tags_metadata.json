@@ -14,5 +14,9 @@
     {
         "name": "Endpoint",
         "description": "Responsible for working with the endpoint table"
+    },
+    {
+        "name": "Schema",
+        "description": "Responsible for working with the schema table"
     }
 ]
