@@ -12,7 +12,7 @@ class Methods(str, Enum):
 
 class EndpointCreate(BaseModel):
     api_id: int
-    #request_schema_id: int
+    request_schema_id: int
     path: str = "/"
     method: Methods = Methods.get
     summary: str = "Summary"
