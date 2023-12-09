@@ -2,5 +2,9 @@
     {
         "name": "Api",
         "description": "Responsible for working with the api table"
+    },
+    {
+        "name": "Contact",
+        "description": "Responsible for working with the contact table"
     }
 ]

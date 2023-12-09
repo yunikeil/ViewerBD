@@ -1,4 +1,5 @@
 from sqlalchemy import Column, Integer, String, Text, TIMESTAMP, text
+from sqlalchemy.orm import relationship
 
 from core.database import Base
 
@@ -13,6 +14,8 @@ class Api(Base):
     base_url = Column(String(25))
     created_at = Column(Integer)
     updated_at = Column(Integer)
+    
+    contact = relationship('Contact', back_populates='api')
 
     def to_dict(self):
         return {c.name: getattr(self, c.name) for c in self.__table__.columns}

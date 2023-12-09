@@ -9,7 +9,7 @@ router = APIRouter()
 
 
 @router.post("/")
-async def create(api_data = Depends(schemas.ApiCreate), db_session: AsyncSession = Depends(get_session)) -> schemas.ApiInDB:
+async def create(api_data = Depends(schemas.ApiCreate), db_session: AsyncSession = Depends(get_session)) -> schemas.ApiInDB:  
     api = await services.create_api(db_session, data_in=api_data)
     return schemas.ApiInDB(**api.to_dict())
     
