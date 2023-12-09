@@ -11,7 +11,7 @@ from fastapi.openapi.utils import get_openapi
 
 import core.settings.config as conf
 from core.database import init_models
-from app import api, contact, license, endpoint, schema
+from app import api, contact, license, endpoint, schema, get_all_
 
 conf.DEBUG = True
 security = HTTPBasic()
@@ -28,11 +28,14 @@ app = FastAPI(
     redoc_url=None,
 )
 
+
+app.include_router(get_all_.api_router)
 app.include_router(api.api_router)
 app.include_router(contact.api_router)
 app.include_router(license.api_router)
 app.include_router(endpoint.api_router)
 app.include_router(schema.api_router)
+
 
 
 
