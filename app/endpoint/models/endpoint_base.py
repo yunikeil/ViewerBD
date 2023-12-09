@@ -21,6 +21,8 @@ class Endpoint(Base):
 
     api = relationship('Api', back_populates='endpoints')
     request_schema = relationship('Schema')
+    
+    parameters = relationship("Parameter", back_populates="endpoint")
 
     def to_dict(self):
         return {c.name: getattr(self, c.name) for c in self.__table__.columns}

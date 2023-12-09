@@ -10,11 +10,14 @@ class Parameter(Base):
     id = Column(Integer, primary_key=True)
     endpoint_id = Column(Integer, ForeignKey('endpoint.id', ondelete='CASCADE'))
     name = Column(String(25))
-    location = Column(Enum('COOKIE', 'HEADER', 'PAYLOAD'))
-    type = Column(Enum('STR', 'INT', 'BOOL', 'FLOAT'))
+    location = Column(Enum('COOKIE', 'HEADER', 'PAYLOAD', name="parameter_locatioin"))
+    type = Column(Enum('STR', 'INT', 'BOOL', 'FLOAT', name="parameter_type"))
     required = Column(Boolean)
     description = Column(Text)
-    created_at = Column(TIMESTAMP, server_default=text('CURRENT_TIMESTAMP'))
-    updated_at = Column(TIMESTAMP, server_default=text('CURRENT_TIMESTAMP'), onupdate=text('CURRENT_TIMESTAMP'))
+    created_at = Column(Integer)
+    updated_at = Column(Integer)
 
     endpoint = relationship('Endpoint', back_populates='parameters')
+
+    def to_dict(self):
+        return {c.name: getattr(self, c.name) for c in self.__table__.columns}
