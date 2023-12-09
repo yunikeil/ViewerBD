@@ -1,5 +1,9 @@
 [
     {
+        "name": "Root",
+        "description": "Responsible for working with the all tables"
+    },
+    {
         "name": "Api",
         "description": "Responsible for working with the api table"
     },
@@ -18,5 +22,9 @@
     {
         "name": "Schema",
         "description": "Responsible for working with the schema table"
+    },
+    {
+        "name": "Parameter",
+        "description": "Responsible for working with the parameter table"
     }
 ]
