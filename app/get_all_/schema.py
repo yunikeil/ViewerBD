@@ -7,4 +7,6 @@ class TableName(str, Enum):
     license = "license"
     endpoint = "endpoint"
     schema = "schema"
+    parameter = "parameter"
+    response = "response"
 

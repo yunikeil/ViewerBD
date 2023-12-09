@@ -17,8 +17,8 @@ class Api(Base):
     
     contact = relationship('Contact', back_populates='api')
     license = relationship('License', back_populates='api')
-    endpoints = relationship("Endpoint", back_populates="api")
-    schemas = relationship("Schema", back_populates="api")
+    endpoints = relationship("Endpoint", back_populates="api", uselist=True)
+    schemas = relationship("Schema", back_populates="api", uselist=True)
 
     def to_dict(self):
         return {c.name: getattr(self, c.name) for c in self.__table__.columns}

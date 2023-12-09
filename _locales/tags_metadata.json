@@ -26,5 +26,9 @@
     {
         "name": "Parameter",
         "description": "Responsible for working with the parameter table"
+    },
+    {
+        "name": "Response",
+        "description": "Responsible for working with the response table"
     }
 ]
