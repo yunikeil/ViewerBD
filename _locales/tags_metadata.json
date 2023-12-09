@@ -6,5 +6,13 @@
     {
         "name": "Contact",
         "description": "Responsible for working with the contact table"
+    },
+    {
+        "name": "License",
+        "description": "Responsible for working with the license table"
+    },
+    {
+        "name": "Endpoint",
+        "description": "Responsible for working with the endpoint table"
     }
 ]

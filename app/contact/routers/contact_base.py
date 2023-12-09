@@ -62,7 +62,7 @@ async def delete(id: int, db_session: AsyncSession = Depends(get_session)) -> sc
     if not contact:
         raise HTTPException(
             status_code=status.HTTP_404_NOT_FOUND,
-            detail="Api not found!"
+            detail="Contact not found!"
         )
     
     deleted_contact = await services.delete_contact(db_session, db_obj=contact)

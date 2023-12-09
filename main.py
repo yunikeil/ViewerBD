@@ -11,7 +11,7 @@ from fastapi.openapi.utils import get_openapi
 
 import core.settings.config as conf
 from core.database import init_models
-from app import api, contact
+from app import api, contact, license, endpoint
 
 conf.DEBUG = True
 security = HTTPBasic()
@@ -30,6 +30,8 @@ app = FastAPI(
 
 app.include_router(api.api_router)
 app.include_router(contact.api_router)
+app.include_router(license.api_router)
+app.include_router(endpoint.api_router)
 
 
 def __temp_get_current_username(

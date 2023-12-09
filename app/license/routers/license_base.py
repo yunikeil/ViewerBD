@@ -1,24 +1,71 @@
-from fastapi import APIRouter, Depends
-from sqlalchemy.orm import Session
+from fastapi import APIRouter, HTTPException, status, Depends
+from sqlalchemy.ext.asyncio import AsyncSession
 
-from services import user as UserService
-from dto import user as UserDTO
-from database import get_db
+from core.database import get_session
+from .. import schemas, services
+
 
 router = APIRouter()
 
-@router.post('/', tags=["user"])
-async def create(data: UserDTO.User = None, db: Session = Depends(get_db)):
-    return UserService.creater_user(data, db)
 
-@router.get('/{id}', tags=["user"])
-async def get(id: int = None, db: Session = Depends(get_db)):
-    return UserService.get_user(id, db)
+@router.post("/")
+async def create(license_data: schemas.LicenseCreate = Depends(schemas.LicenseCreate), db_session: AsyncSession = Depends(get_session)) -> schemas.LicenseInDB:
+    old_license = await services.get_license_by_api_id(db_session, api_id=license_data.api_id)
+    
+    if old_license:
+        raise HTTPException(
+            status_code=status.HTTP_409_CONFLICT,
+            detail="License already exists!"
+        )
+    
+    license = await services.create_license(db_session, data_in=license_data)
+    if not license:
+        raise HTTPException(
+            status_code=status.HTTP_404_NOT_FOUND,
+            detail="Api not found!"
+        )
+    return schemas.LicenseInDB(**license.to_dict())
+    
 
-@router.put('/{id}',tags=["user"])
-async def update(id: int = None, data:UserDTO.User = None, db: Session = Depends(get_db)):
-    return UserService.update(data,db, id)
+@router.get("/")
+async def get(id: int, db_session: AsyncSession = Depends(get_session)) -> schemas.LicenseInDB:
+    license = await services.get_license(db_session, id=id)
+    
+    if not license:
+        raise HTTPException(
+            status_code=status.HTTP_404_NOT_FOUND,
+            detail="License not found!"
+        )
+    
+    return schemas.LicenseInDB(**license.to_dict())
 
-@router.delete('/{id}', tags=["user"])
-async def delete(id: int = None, db: Session = Depends(get_db)):
-    return UserService.remove(db, id)
+
+@router.put("/")
+async def update(id: int, contact_data = Depends(schemas.LicenseUpdate), db_session: AsyncSession = Depends(get_session)) -> schemas.LicenseInDB:
+    license = await services.get_license(db_session, id=id)
+    
+    if not license:
+        raise HTTPException(
+            status_code=status.HTTP_404_NOT_FOUND,
+            detail="License not found!"
+        )
+
+    new_license = await services.update_license(db_session, db_obj=license, obj_in=contact_data)
+    return schemas.LicenseInDB(**new_license.to_dict())
+    ...
+
+
+@router.delete("/")
+async def delete(id: int, db_session: AsyncSession = Depends(get_session)) -> schemas.LicenseInDB:
+    license = await services.get_license(db_session, id=id)
+    
+    if not license:
+        raise HTTPException(
+            status_code=status.HTTP_404_NOT_FOUND,
+            detail="License not found!"
+        )
+    
+    deleted_license = await services.delete_license(db_session, db_obj=license)
+    return schemas.LicenseInDB(**deleted_license.to_dict())
+
+
