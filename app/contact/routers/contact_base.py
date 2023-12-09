@@ -9,7 +9,15 @@ router = APIRouter()
 
 
 @router.post("/")
-async def create(api_data = Depends(schemas.ContactCreate), db_session: AsyncSession = Depends(get_session)) -> schemas.ContactInDB:
+async def create(api_data: schemas.ContactCreate = Depends(schemas.ContactCreate), db_session: AsyncSession = Depends(get_session)) -> schemas.ContactInDB:
+    old_contact = await services.get_contact_by_api_id(db_session, api_id=api_data.api_id)
+    
+    if old_contact:
+        raise HTTPException(
+            status_code=status.HTTP_409_CONFLICT,
+            detail="Contact already exists!"
+        )
+    
     contact = await services.create_contact(db_session, data_in=api_data)
     if not contact:
         raise HTTPException(

@@ -9,7 +9,7 @@ class Contact(Base):
     __tablename__ = 'contact'
 
     id = Column(Integer, primary_key=True)
-    api_id = Column(Integer, ForeignKey('api.id', ondelete='CASCADE'), unique=False)
+    api_id = Column(Integer, ForeignKey('api.id', ondelete='CASCADE'), unique=True)
     name = Column(String(25))
     email = Column(String(50))
     url = Column(String(255))

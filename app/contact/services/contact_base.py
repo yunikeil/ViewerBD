@@ -34,6 +34,12 @@ async def get_contact(db_session: AsyncSession, *, id: int):
     return contact
 
 
+async def get_contact_by_api_id(db_session: AsyncSession, *, api_id: int):
+    stmt = select(models.Contact).where(models.Contact.api_id == api_id)
+    contact: models.Contact | None = (await db_session.execute(stmt)).scalar()
+    return contact
+
+
 async def update_contact(db_session: AsyncSession, *, db_obj: models.Contact, obj_in: schemas.ContactUpdate):
     db_obj.updated_at = int(time.time())
     obj_data = jsonable_encoder(db_obj)
