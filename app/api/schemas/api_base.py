@@ -2,12 +2,17 @@ from pydantic import BaseModel
 
 
 class ApiCreate(BaseModel):
-    name: str
-    title: str
-    version: str
-    description: str
-    base_url: str
+    title: str = "Title"
+    version: str = "0.0.1"
+    description: str = "Description"
+    base_url: str = "/"
 
 
 class ApiUpdate(ApiCreate):
+    pass
+
+
+class ApiInDB(ApiCreate):
     id: int
+    created_at: int
+    updated_at: int

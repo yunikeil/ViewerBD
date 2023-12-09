@@ -11,5 +11,8 @@ class Api(Base):
     version = Column(String(8))
     description = Column(Text)
     base_url = Column(String(25))
-    created_at = Column(TIMESTAMP, server_default=text('CURRENT_TIMESTAMP'))
-    updated_at = Column(TIMESTAMP, server_default=text('CURRENT_TIMESTAMP'), onupdate=text('CURRENT_TIMESTAMP'))
+    created_at = Column(Integer)
+    updated_at = Column(Integer)
+
+    def to_dict(self):
+        return {c.name: getattr(self, c.name) for c in self.__table__.columns}

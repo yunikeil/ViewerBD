@@ -1,24 +1,58 @@
-from fastapi import APIRouter, Depends
-from sqlalchemy.orm import Session
+from fastapi import APIRouter, HTTPException, status, Depends
+from sqlalchemy.ext.asyncio import AsyncSession
 
-from services import user as UserService
-from dto import user as UserDTO
-from database import get_db
+from core.database import get_session
+from .. import schemas, services
+
 
 router = APIRouter()
 
-@router.post('/', tags=["user"])
-async def create(data: UserDTO.User = None, db: Session = Depends(get_db)):
-    return UserService.creater_user(data, db)
 
-@router.get('/{id}', tags=["user"])
-async def get(id: int = None, db: Session = Depends(get_db)):
-    return UserService.get_user(id, db)
+@router.post("/")
+async def create(api_data = Depends(schemas.ApiCreate), db_session: AsyncSession = Depends(get_session)) -> schemas.ApiInDB:
+    api = await services.create_api(db_session, data_in=api_data)
+    return schemas.ApiInDB(**api.to_dict())
+    
 
-@router.put('/{id}',tags=["user"])
-async def update(id: int = None, data:UserDTO.User = None, db: Session = Depends(get_db)):
-    return UserService.update(data,db, id)
+@router.get("/")
+async def get(id: int, db_session: AsyncSession = Depends(get_session)) -> schemas.ApiInDB:
+    api = await services.get_api(db_session, id=id)
+    
+    if not api:
+        raise HTTPException(
+            status_code=status.HTTP_404_NOT_FOUND,
+            detail="Api not found!"
+        )
+    
+    return schemas.ApiInDB(**api.to_dict())
 
-@router.delete('/{id}', tags=["user"])
-async def delete(id: int = None, db: Session = Depends(get_db)):
-    return UserService.remove(db, id)
+
+@router.put("/")
+async def update(id: int, api_data = Depends(schemas.ApiCreate), db_session: AsyncSession = Depends(get_session)) -> schemas.ApiInDB:
+    api = await services.get_api(db_session, id=id)
+    
+    if not api:
+        raise HTTPException(
+            status_code=status.HTTP_404_NOT_FOUND,
+            detail="Api not found!"
+        )
+
+    new_api = await services.update_api(db_session, db_obj=api, obj_in=api_data)
+    return schemas.ApiInDB(**new_api.to_dict())
+    ...
+
+
+@router.delete("/")
+async def delete(id: int, db_session: AsyncSession = Depends(get_session)) -> schemas.ApiInDB:
+    api = await services.get_api(db_session, id=id)
+    
+    if not api:
+        raise HTTPException(
+            status_code=status.HTTP_404_NOT_FOUND,
+            detail="Api not found!"
+        )
+    
+    deleted_api = await services.delete_api(db_session, db_obj=api)
+    return schemas.ApiInDB(**deleted_api.to_dict())
+
+

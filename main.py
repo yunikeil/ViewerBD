@@ -11,8 +11,7 @@ from fastapi.openapi.utils import get_openapi
 
 import core.settings.config as conf
 from core.database import init_models
-
-import app
+from app import api
 
 conf.DEBUG = True
 security = HTTPBasic()
@@ -28,6 +27,8 @@ app = FastAPI(
     docs_url="/docs" if conf.DEBUG else None,
     redoc_url=None,
 )
+
+app.include_router(api.api_router)
 
 
 def __temp_get_current_username(
@@ -70,5 +71,5 @@ async def openapi(username: str = Depends(__temp_get_current_username)):
 
 
 if __name__ == "__main__":
-    asyncio.run(init_models(drop_all=False))
+    asyncio.run(init_models(drop_all=True))
     uvicorn.run("main:app", host=conf.SERVER_IP, port=conf.SERVER_PORT, reload=True)

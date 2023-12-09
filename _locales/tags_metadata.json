@@ -1,6 +1,6 @@
 [
     {
-        "name": "root",
-        "description": "root router"
+        "name": "Api",
+        "description": "Responsible for working with the api table"
     }
 ]
