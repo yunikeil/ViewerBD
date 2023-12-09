@@ -4,7 +4,7 @@ from pydantic import BaseModel
 
 
 class ParameterLocation(str, Enum):
-    cookie = "COOKIE"
+    cookie = "COOCKIE"
     header = "HEADER"
     payload = "PAYLOAD"
 

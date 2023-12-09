@@ -14,3 +14,4 @@ pytest
 aiosmtplib
 Jinja2
 python-dotenv
+asyncpg

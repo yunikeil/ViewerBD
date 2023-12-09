@@ -10,7 +10,7 @@ class Parameter(Base):
     id = Column(Integer, primary_key=True)
     endpoint_id = Column(Integer, ForeignKey('endpoint.id', ondelete='CASCADE'))
     name = Column(String(25))
-    location = Column(Enum('COOKIE', 'HEADER', 'PAYLOAD', name="parameter_locatioin"))
+    location = Column(Enum('COOCKIE', 'HEADER', 'PAYLOAD', name="parameter_locatioin"))
     type = Column(Enum('STR', 'INT', 'BOOL', 'FLOAT', name="parameter_type"))
     required = Column(Boolean)
     description = Column(Text)

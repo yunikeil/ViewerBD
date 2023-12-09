@@ -11,7 +11,7 @@ class Endpoint(Base):
 
     id = Column(Integer, primary_key=True)
     api_id = Column(Integer, ForeignKey('api.id', ondelete='CASCADE'))
-    request_schema_id = Column(Integer, ForeignKey('schema.id'))
+    request_schema_id = Column(Integer, ForeignKey('schema.id', ondelete='CASCADE'))
     path = Column(String(255))
     method = Column(Enum('POST', 'GET', 'PUT', 'DELETE', name="endpoint_methods"))
     summary = Column(String(255))
